@@ -14,12 +14,12 @@ import threading
 import queue
 
 app = Flask(__name__)
-app.secret_key = "secret123"
+app.secret_key = "#"
 
 # -----------------------------
 # Gemini API setup
 # -----------------------------
-api_key = "AIzaSyC_WXI8fi4EqedWNoaMdbMYocPW16d2ybw"
+api_key = "API_KEY"
 genai.configure(api_key=api_key)
 gemini_model = genai.GenerativeModel("gemini-1.5-flash")
 
@@ -510,4 +510,5 @@ def interview_results():
 if __name__ == "__main__":
     if not os.path.exists("uploads"):
         os.makedirs("uploads")
+
     app.run(debug=True, port=5000)

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start Test - AI Mock Interview</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --accent: #7209b7;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #4cc9f0;
+      --warning: #f72585;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: var(--light);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      padding-top: 80px; /* Added padding for fixed navbar */
+    }
+    
+    /* Navigation Bar */
+    .navbar {
+      background: rgba(0, 0, 0, 0.7) !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      padding: 15px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    
+    .navbar-brand {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.8rem;
+      background: linear-gradient(45deg, var(--primary), var(--success));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .nav-link {
+      color: rgba(255, 255, 255, 0.8) !important;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      color: var(--success) !important;
+      transform: translateY(-2px);
+    }
+    
+    .btn-nav {
+      background: linear-gradient(45deg, var(--primary), var(--accent));
+      border: none;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+    
+    .btn-nav:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+      background: linear-gradient(45deg, var(--accent), var(--primary));
+    }
+    
+    /* Background Elements */
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(58, 12, 163, 0.7)), 
+                  url('https://wallpapers.com/images/hd/zoom-interview-background-makirezh2ea3q93s.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      z-index: -2;
+    }
+    
+    .test-container {
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      padding: 40px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+      margin: 0 auto;
+    }
+    
+    .test-container:hover {
+      transform: translateY(-5px);
+    }
+    
+    .test-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .test-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(45deg, var(--primary), var(--success), var(--warning));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 15px;
+    }
+    
+    .test-subtitle {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.1rem;
+    }
+    
+    .mode-selection {
+      margin-bottom: 30px;
+    }
+    
+    .mode-option {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .mode-option:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--primary);
+      transform: translateX(5px);
+    }
+    
+    .mode-option.selected {
+      background: rgba(67, 97, 238, 0.15);
+      border-color: var(--primary);
+    }
+    
+    .mode-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .mode-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(45deg, var(--primary), var(--accent));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      font-size: 1.5rem;
+    }
+    
+    .mode-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 0;
+    }
+    
+    .mode-description {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+    
+    .file-upload {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px dashed rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 15px;
+      transition: all 0.3s ease;
+      display: none;
+    }
+    
+    .file-upload:hover {
+      border-color: var(--success);
+    }
+    
+    .file-input {
+      display: none;
+    }
+    
+    .file-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+    
+    .file-icon {
+      font-size: 2rem;
+      color: var(--success);
+      margin-bottom: 10px;
+    }
+    
+    .file-text {
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 10px;
+    }
+    
+    .file-name {
+      color: var(--success);
+      font-weight: 500;
+      margin-top: 10px;
+      display: none;
+    }
+    
+    .btn-start {
+      background: linear-gradient(45deg, var(--primary), var(--accent));
+      border: none;
+      padding: 15px 40px;
+      border-radius: 50px;
+      font-weight: 600;
+      color: var(--light);
+      width: 100%;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      font-size: 1.1rem;
+      margin-top: 20px;
+    }
+    
+    .btn-start:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--accent), var(--primary));
+      z-index: -1;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+    }
+    
+    .btn-start:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(67, 97, 238, 0.4);
+    }
+    
+    .btn-start:hover:before {
+      opacity: 1;
+    }
+    
+    .btn-start:disabled {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.5);
+      cursor: not-allowed;
+    }
+    
+    .btn-start:disabled:hover {
+      transform: none;
+      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+    }
+    
+    .form-check-input {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .form-check-input:checked {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .form-check-label {
+      color: rgba(255, 255, 255, 0.9);
+      cursor: pointer;
+    }
+    
+    @media (max-width: 576px) {
+      body {
+        padding-top: 70px;
+      }
+      
+      .test-container {
+        padding: 30px 20px;
+      }
+      
+      .test-title {
+        font-size: 2rem;
+      }
+      
+      .mode-header {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .mode-icon {
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+      
+      .navbar-brand {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/dashboard">
+        <i class="fas fa-robot me-2"></i>AI Interview Pro
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard"><i class="fas fa-home me-1"></i> Dashboard</a>
+          </li>
+          
+          
+          <li class="nav-item ms-2">
+            <a class="btn btn-nav" href="/logout"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Background Elements -->
+  <div class="bg-overlay"></div>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="test-container">
+          <div class="test-header">
+            <h1 class="test-title">Select Interview Mode</h1>
+            <p class="test-subtitle">Choose how you want to practice for your interview</p>
+          </div>
+          
+          <form method="POST" enctype="multipart/form-data" id="testForm">
+            <div class="mode-selection">
+              <div class="mode-option" onclick="selectMode('resume')">
+                <div class="mode-header">
+                  <div class="mode-icon">
+                    <i class="fas fa-file-pdf"></i>
+                  </div>
+                  <h3 class="mode-title">Resume-based Interview</h3>
+                </div>
+                <p class="mode-description">Upload your resume and we'll generate personalized questions based on your experience and skills.</p>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="mode" id="resumeMode" value="resume" required>
+                  <label class="form-check-label" for="resumeMode">
+                    Select this option
+                  </label>
+                </div>
+                
+                <div class="file-upload" id="resumeUpload">
+                  <input type="file" name="resume" id="resumeFile" class="file-input" accept=".pdf">
+                  <label for="resumeFile" class="file-label">
+                    <div class="file-icon">
+                      <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="file-text">Click to upload your resume (PDF)</div>
+                    <div class="file-name" id="fileName"></div>
+                  </label>
+                </div>
+              </div>
+              
+              <div class="mode-option" onclick="selectMode('direct')">
+                <div class="mode-header">
+                  <div class="mode-icon">
+                    <i class="fas fa-code"></i>
+                  </div>
+                  <h3 class="mode-title">Direct Technical Interview</h3>
+                </div>
+                <p class="mode-description">Get random technical questions across various topics to test your knowledge and problem-solving skills.</p>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="mode" id="directMode" value="direct">
+                  <label class="form-check-label" for="directMode">
+                    Select this option
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn-start" id="startButton" disabled>
+              <i class="fas fa-play-circle me-2"></i> Start Interview
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function selectMode(mode) {
+      // Update radio buttons
+      document.getElementById(mode + 'Mode').checked = true;
+      
+      // Show/hide resume upload
+      const resumeUpload = document.getElementById('resumeUpload');
+      if (mode === 'resume') {
+        resumeUpload.style.display = 'block';
+      } else {
+        resumeUpload.style.display = 'none';
+      }
+      
+      // Update visual selection
+      document.querySelectorAll('.mode-option').forEach(option => {
+        option.classList.remove('selected');
+      });
+      
+      event.currentTarget.classList.add('selected');
+      
+      // Enable/disable start button
+      validateForm();
+    }
+    
+    function validateForm() {
+      const startButton = document.getElementById('startButton');
+      const resumeMode = document.getElementById('resumeMode').checked;
+      const resumeFile = document.getElementById('resumeFile').value;
+      
+      if (resumeMode && !resumeFile) {
+        startButton.disabled = true;
+      } else {
+        startButton.disabled = false;
+      }
+    }
+    
+    // Handle file selection
+    document.getElementById('resumeFile').addEventListener('change', function(e) {
+      const fileName = document.getElementById('fileName');
+      if (this.files.length > 0) {
+        fileName.textContent = this.files[0].name;
+        fileName.style.display = 'block';
+      } else {
+        fileName.style.display = 'none';
+      }
+      validateForm();
+    });
+    
+    // Validate form on mode change
+    document.querySelectorAll('input[name="mode"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        if (this.value === 'resume') {
+          document.getElementById('resumeUpload').style.display = 'block';
+        } else {
+          document.getElementById('resumeUpload').style.display = 'none';
+        }
+        validateForm();
+        
+        // Update visual selection
+        document.querySelectorAll('.mode-option').forEach(option => {
+          option.classList.remove('selected');
+        });
+        this.closest('.mode-option').classList.add('selected');
+      });
+    });
+  </script>
+</body>
+</html>

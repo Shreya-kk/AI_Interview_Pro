@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - AI Mock Interview</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --accent: #7209b7;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #4cc9f0;
+      --warning: #f72585;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: var(--light);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(58, 12, 163, 0.7)), 
+                  url('https://wallpapers.com/images/hd/zoom-interview-background-majc1ejnshgc1li7.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      z-index: -2;
+    }
+    
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      animation: floatParticle 15s infinite linear;
+      z-index: -1;
+    }
+    
+    @keyframes floatParticle {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(100vw);
+        opacity: 0;
+      }
+    }
+    
+    .dashboard-card {
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      padding: 40px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+    
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .dashboard-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(45deg, var(--primary), var(--success), var(--warning));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 15px;
+    }
+    
+    .dashboard-subtitle {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    
+    .btn-custom {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(45deg, var(--primary), var(--accent));
+      border: none;
+      padding: 15px 35px;
+      border-radius: 50px;
+      font-weight: 600;
+      color: var(--light);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      margin: 15px;
+      min-width: 200px;
+    }
+    
+    .btn-custom:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--accent), var(--primary));
+      z-index: -1;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+    }
+    
+    .btn-custom:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(67, 97, 238, 0.4);
+      color: var(--light);
+    }
+    
+    .btn-custom:hover:before {
+      opacity: 1;
+    }
+    
+    .btn-custom i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+    
+    .btn-logout {
+      background: linear-gradient(45deg, var(--warning), #d90429);
+    }
+    
+    .btn-logout:before {
+      background: linear-gradient(45deg, #d90429, var(--warning));
+    }
+    
+    .btn-profile {
+      background: linear-gradient(45deg, var(--success), #2a9d8f);
+    }
+    
+    .btn-profile:before {
+      background: linear-gradient(45deg, #2a9d8f, var(--success));
+    }
+    
+    .btn-results {
+      background: linear-gradient(45deg, #f9c74f, #f9844a);
+    }
+    
+    .btn-results:before {
+      background: linear-gradient(45deg, #f9844a, #f9c74f);
+    }
+    
+    .user-info {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+    }
+    
+    .user-name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      background: linear-gradient(45deg, var(--primary), var(--success));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .user-email {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+    }
+    
+    .stats-container {
+      display: flex;
+      justify-content: space-around;
+      margin: 30px 0;
+    }
+    
+    .stat-item {
+      text-align: center;
+      padding: 15px;
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(45deg, var(--primary), var(--success));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+    
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    @media (max-width: 576px) {
+      .dashboard-card {
+        padding: 30px 20px;
+        margin: 20px;
+      }
+      
+      .dashboard-title {
+        font-size: 2.2rem;
+      }
+      
+      .button-group {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn-custom {
+        width: 100%;
+        max-width: 280px;
+      }
+      
+      .stats-container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Elements -->
+  <div class="bg-overlay"></div>
+  <div id="particles-container"></div>
+
+  <div class="dashboard-card">
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">AI Mock Interview</h1>
+      <p class="dashboard-subtitle">Your personal interview preparation platform</p>
+    </div>
+    
+    <div class="user-info">
+      <div class="user-name">Welcome, {{ user }}!</div>
+      
+    </div>
+    
+    
+    
+    <div class="button-group">
+      <a href="{{ url_for('take_test') }}" class="btn btn-custom">
+        <i class="fas fa-play-circle"></i> Start Test
+      </a>
+      
+      
+      <a href="/logout" class="btn btn-custom btn-logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Create floating particles
+    function createParticles() {
+      const container = document.getElementById('particles-container');
+      const particleCount = 20;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random size between 3 and 8 pixels
+        const size = Math.random() * 5 + 3;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random position
+        particle.style.left = `${Math.random() * 100}vw`;
+        particle.style.top = `${Math.random() * 100}vh`;
+        
+        // Random animation duration
+        const duration = Math.random() * 20 + 10;
+        particle.style.animationDuration = `${duration}s`;
+        
+        // Random delay
+        const delay = Math.random() * 5;
+        particle.style.animationDelay = `${delay}s`;
+        
+        container.appendChild(particle);
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      createParticles();
+    });
+  </script>
+</body>
+</html>

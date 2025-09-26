@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Mock Interview - Echo Fix</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --accent: #7209b7;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #4cc9f0;
+      --warning: #f72585;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: var(--light);
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-top: 80px;
+    }
+    .navbar {
+      background: rgba(0,0,0,0.7) !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+      padding: 15px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    .navbar-brand {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.8rem;
+      background: linear-gradient(45deg, var(--primary), var(--success));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .interview-container {
+      background: rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 40px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .interview-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .interview-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(45deg, var(--primary), var(--success), var(--warning));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .interview-subtitle {
+      color: rgba(255,255,255,0.7);
+      font-size: 1.1rem;
+    }
+    .main-content {
+      display: flex;
+      gap: 30px;
+    }
+    .left-panel {
+      flex: 1;
+    }
+    .right-panel {
+      flex: 1.5;
+    }
+    .video-container {
+      position: relative;
+      margin-bottom: 30px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    #video {
+      width: 100%;
+      border-radius: 15px;
+      transform: scaleX(-1);
+    }
+    .video-overlay {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      background: rgba(0,0,0,0.7);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      color: var(--success);
+    }
+    .question-container {
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 25px;
+      border-left: 4px solid var(--primary);
+    }
+    .question-text {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 15px;
+      color: var(--light);
+    }
+    .question-counter {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+    }
+    .answer-container {
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 25px;
+      min-height: 120px;
+      border-left: 4px solid var(--success);
+    }
+    .answer-text {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.8);
+    }
+    .controls-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .btn-interview {
+      background: linear-gradient(45deg, var(--primary), var(--accent));
+      border: none;
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      color: var(--light);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-interview:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(67,97,238,0.4);
+      background: linear-gradient(45deg, var(--accent), var(--primary));
+      color: var(--light);
+    }
+    .btn-interview:disabled {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.5);
+      cursor: not-allowed;
+    }
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+    }
+    .pulse-dot {
+      width: 12px;
+      height: 12px;
+      background-color: var(--success);
+      border-radius: 50%;
+      margin-right: 10px;
+      animation: pulse 1.5s infinite;
+    }
+    .recording-indicator {
+      width: 12px;
+      height: 12px;
+      background-color: var(--warning);
+      border-radius: 50%;
+      margin-right: 10px;
+      animation: pulse 0.8s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+    .progress-container {
+      margin: 25px 0;
+    }
+    .progress {
+      height: 10px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      background: linear-gradient(45deg, var(--primary), var(--success));
+      border-radius: 5px;
+      transition: width 0.5s ease;
+    }
+    .emotion-display {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .emotion-badge {
+      background: rgba(76,201,240,0.2);
+      color: var(--success);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+    }
+    .emotion-badge i {
+      margin-right: 5px;
+    }
+    .silence-timer {
+      background: rgba(247,37,133,0.2);
+      color: var(--warning);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+    }
+    .audio-settings {
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 25px;
+      border-left: 4px solid var(--accent);
+    }
+    .form-check {
+      margin-bottom: 10px;
+    }
+    @media (max-width: 992px) {
+      .main-content {
+        flex-direction: column;
+      }
+    }
+    @media (max-width: 768px) {
+      .interview-container { padding: 25px 20px; }
+      .interview-title { font-size: 2rem; }
+      .controls-container { flex-direction: column; }
+      .btn-interview { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/dashboard"><i class="fas fa-robot me-2"></i>AI Interview Pro</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/dashboard"><i class="fas fa-home me-1"></i> Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#"><i class="fas fa-play-circle me-1"></i> Interview</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt me-1"></i> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="interview-container">
+      <div class="interview-header">
+        <h1 class="interview-title">AI Mock Interview</h1>
+        <p class="interview-subtitle">Answer questions while we analyze your responses and emotions</p>
+      </div>
+      
+      <div class="progress-container">
+        <div class="d-flex justify-content-between mb-2">
+          <span class="question-counter">Question <span id="currentQuestion">0</span> of <span id="totalQuestions">0</span></span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress"><div id="progressBar" class="progress-bar" style="width:0%"></div></div>
+      </div>
+      
+      <div class="main-content">
+        <div class="left-panel">
+          <div class="video-container">
+            <video id="video" autoplay muted></video>
+            <div class="video-overlay"><i class="fas fa-video me-1"></i> Live Camera Feed</div>
+          </div>
+          
+        <!--<div class="audio-settings">
+            <h5><i class="fas fa-volume-up me-2"></i>Audio Settings</h5>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="echoCancellation" checked>
+              <label class="form-check-label" for="echoCancellation">Enable Echo Cancellation</label>
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="noiseSuppression" checked>
+              <label class="form-check-label" for="noiseSuppression">Enable Noise Suppression</label>
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="autoGainControl" checked>
+              <label class="form-check-label" for="autoGainControl">Enable Auto Gain Control</label>
+            </div>
+            <p class="mt-2 mb-0 small text-muted">If you're experiencing echo, try using headphones or adjusting these settings.</p>
+          </div>-->  
+        </div>
+        
+        <div class="right-panel">
+          <div class="question-container">
+            <div class="question-counter" id="questionStatus">Ready to begin</div>
+            <div class="question-text" id="questionText">Click "Start Interview" to begin your AI-powered mock interview</div>
+          </div>
+          
+          <div class="answer-container"><div class="answer-text" id="answerText">Your speech will be transcribed here in real-time...</div></div>
+          
+          <div class="emotion-display" id="emotionDisplay">
+            <div class="emotion-badge"><i class="fas fa-brain"></i> Emotion Detection Active</div>
+            <div class="silence-timer" id="silenceTimer" style="display:none;"><i class="fas fa-clock"></i> Silence: <span id="silenceCount">0</span>s</div>
+          </div>
+          
+          <div class="controls-container">
+            <button id="startBtn" class="btn-interview"><i class="fas fa-play-circle me-2"></i> Start Interview</button>
+            <button id="nextBtn" class="btn-interview" disabled><i class="fas fa-forward me-2"></i> Next Question</button>
+          </div>
+          
+          <div class="status-indicator"><div class="pulse-dot" id="statusIndicator"></div><span id="statusText">Ready to start interview</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // All JavaScript code remains exactly the same as in the original
+    const video = document.getElementById("video");
+    const startBtn = document.getElementById("startBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const questionText = document.getElementById("questionText");
+    const questionStatus = document.getElementById("questionStatus");
+    const answerText = document.getElementById("answerText");
+    const statusText = document.getElementById("statusText");
+    const statusIndicator = document.getElementById("statusIndicator");
+    const emotionDisplay = document.getElementById("emotionDisplay");
+    const currentQuestionEl = document.getElementById("currentQuestion");
+    const totalQuestionsEl = document.getElementById("totalQuestions");
+    const progressBar = document.getElementById("progressBar");
+    const progressPercent = document.getElementById("progressPercent");
+    const silenceTimer = document.getElementById("silenceTimer");
+    const silenceCount = document.getElementById("silenceCount");
+   // const echoCancellation = document.getElementById("echoCancellation");
+   // const noiseSuppression = document.getElementById("noiseSuppression");
+    //const autoGainControl = document.getElementById("autoGainControl");
+
+    let emotionsAll = [], currentQuestionIndex = 0, totalQuestions = 0;
+    let emotionInterval = null, speechCheckInterval = null, silenceSeconds = 0, currentAnswer = "";
+    let mediaStream = null;
+    let audioContext = null;
+    let sourceNode = null;
+    let processingNode = null;
+    let destinationNode = null;
+
+    async function setupMedia() {
+      try {
+        const constraints = {
+          video: true,
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
+        };
+        
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        mediaStream = stream;
+        video.srcObject = stream;
+        
+        // Set up audio processing to prevent echo
+        setupAudioProcessing(stream);
+        
+        statusText.textContent = "Media devices ready";
+        statusIndicator.style.backgroundColor = "#4cc9f0";
+      } catch(err) {
+        console.error("Error accessing media devices:", err);
+        statusText.textContent = "Error accessing camera/microphone";
+        statusIndicator.style.backgroundColor = "#f72585";
+        
+        // Try again with more basic constraints
+        try {
+          const basicConstraints = { video: true, audio: true };
+          const stream = await navigator.mediaDevices.getUserMedia(basicConstraints);
+          mediaStream = stream;
+          video.srcObject = stream;
+          statusText.textContent = "Media devices ready (basic mode)";
+          statusIndicator.style.backgroundColor = "#4cc9f0";
+        } catch(err2) {
+          console.error("Error with basic constraints:", err2);
+          statusText.textContent = "Cannot access media devices";
+          statusIndicator.style.backgroundColor = "#f72585";
+        }
+      }
+    }
+function speakQuestion(text) {
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";   // set language/voice
+  utterance.pitch = 1;        // voice pitch (0–2)
+  utterance.rate = 1;         // speed (0.1–10)
+  speechSynthesis.speak(utterance);
+}
+
+    function setupAudioProcessing(stream) {
+      try {
+        // Create audio context if not already created
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        
+        // Create source node from microphone
+        sourceNode = audioContext.createMediaStreamSource(stream);
+        
+        // Create processing node (can be used for additional audio processing)
+        processingNode = audioContext.createGain();
+        processingNode.gain.value = 1.0;
+        
+        // Create destination node
+        destinationNode = audioContext.createMediaStreamDestination();
+        
+        // Connect nodes: source -> processing -> destination
+        sourceNode.connect(processingNode);
+        //processingNode.connect(destinationNode);
+        
+        // You could add additional audio processing here if needed
+        
+      } catch (error) {
+        console.error("Error setting up audio processing:", error);
+      }
+    }
+//echoCancellation.addEventListener('change', updateAudioSettings);
+   // noiseSuppression.addEventListener('change', updateAudioSettings);
+    //autoGainControl.addEventListener('change', updateAudioSettings);
+
+    function updateAudioSettings() {
+        if (mediaStream) {
+            mediaStream.getTracks().forEach(track => track.stop());
+        }
+        setupMedia();
+    }
+
+    // Initialize media devices when page loads
+    document.addEventListener('DOMContentLoaded', setupMedia);
+
+    // Start interview button handler
+    startBtn.addEventListener('click', startInterview);
+
+    // Next question button handler
+    nextBtn.addEventListener('click', nextQuestion);
+
+    async function startInterview() {
+        try {
+            startBtn.disabled = true;
+            statusText.textContent = "Starting interview...";
+            statusIndicator.style.backgroundColor = "#7209b7";
+
+            const response = await fetch('/start-interview', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                currentQuestionIndex = data.question_index;
+                totalQuestions = data.total_questions;
+                
+                questionText.textContent = data.question;
+                speakQuestion(data.question);
+
+                questionStatus.textContent = `Question ${currentQuestionIndex + 1} of ${totalQuestions}`;
+                currentQuestionEl.textContent = currentQuestionIndex + 1;
+                totalQuestionsEl.textContent = totalQuestions;
+                
+                updateProgress();
+                
+                nextBtn.disabled = false;
+                statusText.textContent = "Interview started - Listening...";
+                statusIndicator.style.backgroundColor = "#4cc9f0";
+                
+                // Start emotion detection
+                startEmotionDetection();
+                
+                // Start checking for speech
+                startSpeechCheck();
+            } else {
+                throw new Error('Failed to start interview');
+            }
+        } catch (error) {
+            console.error('Error starting interview:', error);
+            statusText.textContent = "Error starting interview";
+            statusIndicator.style.backgroundColor = "#f72585";
+            startBtn.disabled = false;
+        }
+    }
+
+    async function nextQuestion() {
+        try {
+            nextBtn.disabled = true;
+            statusText.textContent = "Processing...";
+            statusIndicator.style.backgroundColor = "#7209b7";
+
+            // Send current answer and emotions to server
+            const response = await fetch('/next-question', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    answer: currentAnswer,
+                    emotions: emotionsAll
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                
+                if (data.status === "complete") {
+                    // Interview completed
+                    window.location.href = '/interview-results';
+                    return;
+                }
+                
+                currentQuestionIndex = data.question_index;
+                questionText.textContent = data.question;
+                speakQuestion(data.question);
+
+                questionStatus.textContent = `Question ${currentQuestionIndex + 1} of ${totalQuestions}`;
+                currentQuestionEl.textContent = currentQuestionIndex + 1;
+                
+                updateProgress();
+                
+                // Reset for new question
+                currentAnswer = "";
+                answerText.textContent = "Your speech will be transcribed here in real-time...";
+                emotionsAll = [];
+                
+                nextBtn.disabled = false;
+                statusText.textContent = "Listening...";
+                statusIndicator.style.backgroundColor = "#4cc9f0";
+            } else {
+                throw new Error('Failed to get next question');
+            }
+        } catch (error) {
+            console.error('Error getting next question:', error);
+            statusText.textContent = "Error getting next question";
+            statusIndicator.style.backgroundColor = "#f72585";
+            nextBtn.disabled = false;
+        }
+    }
+
+    function updateProgress() {
+        const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+        progressBar.style.width = `${progress}%`;
+        progressPercent.textContent = `${Math.round(progress)}%`;
+    }
+
+    function startEmotionDetection() {
+        if (emotionInterval) clearInterval(emotionInterval);
+        
+        emotionInterval = setInterval(async () => {
+            if (!mediaStream) return;
+            
+            try {
+                // Capture frame from video
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // Convert to base64
+                const imageData = canvas.toDataURL('image/jpeg');
+                
+                // Send to server for processing
+                const response = await fetch('/process-frame', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ image: imageData })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.emotions && data.emotions.length > 0) {
+                        emotionsAll = emotionsAll.concat(data.emotions);
+                        
+                        // Update emotion display
+                        const emotionCounts = {};
+                        data.emotions.forEach(emotion => {
+                            emotionCounts[emotion] = (emotionCounts[emotion] || 0) + 1;
+                        });
+                        
+                        // Show most frequent emotion in this frame
+                        const dominantEmotion = Object.keys(emotionCounts).reduce((a, b) => 
+                            emotionCounts[a] > emotionCounts[b] ? a : b
+                        );
+                        
+                        const emotionBadge = document.querySelector('.emotion-badge');
+                        emotionBadge.innerHTML = `<i class="fas fa-brain"></i> ${dominantEmotion}`;
+                    }
+                }
+            } catch (error) {
+                console.error('Error in emotion detection:', error);
+            }
+        }, 3000); // Process frame every 3 seconds
+    }
+
+    function startSpeechCheck() {
+        if (speechCheckInterval) clearInterval(speechCheckInterval);
+        
+        speechCheckInterval = setInterval(async () => {
+            try {
+                const response = await fetch('/check-speech');
+                const data = await response.json();
+                
+                if (data.type === "speech") {
+                    // Reset silence timer
+                    silenceSeconds = 0;
+                    silenceTimer.style.display = "none";
+                    
+                    // Append recognized speech to answer
+                    currentAnswer += (currentAnswer ? " " : "") + data.text;
+                    answerText.textContent = currentAnswer;
+                    
+                    statusText.textContent = "Speech detected";
+                    statusIndicator.style.backgroundColor = "#4cc9f0";
+                } 
+                else if (data.type === "silence")
+             {
+                // Increment silence timer
+                silenceSeconds++;
+                silenceCount.textContent = silenceSeconds;
+                silenceTimer.style.display = "flex";
+                
+                if (silenceSeconds >= 3) {   // ⬅️ Trigger after 3 seconds
+                    statusText.textContent = "Silence detected - moving to next question...";
+                    statusIndicator.style.backgroundColor = "#f72585";
+                    nextQuestion();   // ⬅️ Auto move to next question
+                    silenceSeconds = 0; // reset after moving
+                } else {
+                    statusText.textContent = "Listening...";
+                    statusIndicator.style.backgroundColor = "#4cc9f0";
+                }
+            }
+
+            } catch (error) {
+                console.error('Error checking speech:', error);
+            }
+        }, 1000); // Check every second
+    }
+
+    // Clean up when leaving the page
+    window.addEventListener('beforeunload', () => {
+        if (emotionInterval) clearInterval(emotionInterval);
+        if (speechCheckInterval) clearInterval(speechCheckInterval);
+        
+        if (mediaStream) {
+            mediaStream.getTracks().forEach(track => track.stop());
+        }
+        
+        if (audioContext) {
+            audioContext.close();
+        }
+    });
+</script>
+
+</body>
+</html>

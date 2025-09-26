@@ -1,25 +1,25 @@
 **AI Interview Evaluator with Emotion and Behavior Analysis**
 
 Description
-AI-powered mock interview system that evaluates a candidate’s behavior and emotions during the interview. The system conducts interviews based on the uploaded resume and provides real-time feedback on confidence, engagement, and emotional cues.
+_AI-powered mock interview system that evaluates a candidate’s behavior and emotions during the interview. The system conducts interviews based on the uploaded resume and provides real-time feedback on confidence, engagement, and emotional cues._
 
 **Features**
 
-Conducts interviews using resume details.
+_Conducts interviews using resume details.
 
 Detects candidate emotions and behavior in real-time using webcam.
 
 Provides feedback on confidence, attentiveness, and engagement.
 
-Emotion recognition powered by MobileNet-based CNN.
+Emotion recognition powered by MobileNet-based CNN._
 
 **Technologies Used**
 
-Python, OpenCV
+_Python, OpenCV
 
 TensorFlow / Keras (MobileNet model)
 
-Flask for web application
+Flask for web application_
 
 HTML, CSS, JavaScript for frontend
 **

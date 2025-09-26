@@ -5,25 +5,25 @@ _AI-powered mock interview system that evaluates a candidate’s behavior and em
 
 **Features**
 
-_Conducts interviews using resume details.
+Conducts interviews using resume details.
 
 Detects candidate emotions and behavior in real-time using webcam.
 
 Provides feedback on confidence, attentiveness, and engagement.
 
-Emotion recognition powered by MobileNet-based CNN._
+Emotion recognition powered by MobileNet-based CNN.
 
 **Technologies Used**
 
-_Python, OpenCV
+Python, OpenCV
 
 TensorFlow / Keras (MobileNet model)
 
 Flask for web application_
 
 HTML, CSS, JavaScript for frontend
-**
-How It Works**
+
+**How It Works**
 
 Candidate uploads resume.
 
